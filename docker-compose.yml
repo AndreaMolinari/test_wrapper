@@ -24,7 +24,7 @@ services:
     container_name: webgest-running
     build: 
       context: ./frontend
-      dockerfile: ./webgest/dockerfile.dev
+      dockerfile: ./dockerfile.dev
     ports:
       - 4200:4200
     working_dir: /webgest_cnt
@@ -40,10 +40,10 @@ services:
   backend:
     container_name: api-running
     build: 
-      context: ./
-      dockerfile: ./backend/dockerfile.dev
+      context: ./backend
+      dockerfile: ./dockerfile.dev
     volumes:
-      - ./api:/backend_cnt:rw
+      - ./backend:/backend_cnt:rw
       - backend_vendor:/backend_cnt/vendor:rw
       - ./logs/backend:/backend_cnt/storage/logs
     # command: php artisan serve --host 0.0.0.0
