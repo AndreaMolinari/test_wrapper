@@ -1,5 +1,10 @@
 #!/bin/bash
 
+docker compose -f ./docker-compose.yml --env-file="./.env" up -d
+docker compose -f ./backend/docker-compose.yml -f ./docker-compose.api.yml --env-file="./.env" up -d
+docker compose -f ./frontend/docker-compose.yml -f ./docker-compose.webgest.yml --env-file="./.env" up -d
+
+exit
 dev=false
 help=false
 push=false
