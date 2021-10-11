@@ -1,17 +1,77 @@
-# /web/docker-compose.yml
-
-version: "3.7"
-
-services:
-  reverse-proxy:
-    image: nginx:1.21-alpine
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - "80:80"
-      - "443:443"
-    networks: 
-      - reverse_proxy_net
+# ./docker-compose.yml
+version: '3.7'
 
 networks:
-  reverse_proxy_net:
+  webgest_net:
+    driver: bridge
+  backend_net:
+    driver: bridge
+
+volumes:
+  mariadb:
+    driver: local
+  node_modules: 
+  webgest:
+    driver: local
+  backend_vendor:
+  logs:
+  backend:
+    driver: local
+
+services:
+
+  webgest:
+    container_name: webgest-running
+    build: 
+      context: ./frontend
+      dockerfile: ./webgest/dockerfile.dev
+    ports:
+      - 4200:4200
+    working_dir: /webgest_cnt
+    volumes:
+      - ./frontend:/webgest_cnt
+      - node_modules:/webgest_cnt/node_modules
+    networks:
+      - webgest_net
+    depends_on:
+      - backend
+      
+
+  backend:
+    container_name: api-running
+    build: 
+      context: ./
+      dockerfile: ./backend/dockerfile.dev
+    volumes:
+      - ./api:/backend_cnt:rw
+      - backend_vendor:/backend_cnt/vendor:rw
+      - ./logs/backend:/backend_cnt/storage/logs
+    # command: php artisan serve --host 0.0.0.0
+    ports:
+      - 8000:8000
+    networks:
+      - backend_net
+    depends_on:
+      - mariadb
+
+# █████████████████████████████████████████████
+# █▄─▀█▀─▄██▀▄─██▄─▄▄▀█▄─▄██▀▄─████▄─▄▄▀█▄─▄─▀█
+# ██─█▄█─███─▀─███─▄─▄██─███─▀─█████─██─██─▄─▀█
+# ▀▄▄▄▀▄▄▄▀▄▄▀▄▄▀▄▄▀▄▄▀▄▄▄▀▄▄▀▄▄▀▀▀▄▄▄▄▀▀▄▄▄▄▀▀
+
+  mariadb:
+    image: mariadb:10.5
+    restart: unless-stopped # dev only
+    environment:
+      TZ: UTC
+      MARIADB_ROOT_PASSWORD: _toor_
+      MARIADB_DATABASE: api
+      MARIADB_USER: aMolinariCom
+      MARIADB_PASSWORD: _imatto_
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d # Dbms configuration
+      - mariadb:/var/lib/mysql # Stores databases in volume
+    ports:
+      - 3306:3306
+    networks:
+      - backend_net

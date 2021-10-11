@@ -1,10 +1,7 @@
 #!/bin/bash
 
-docker-compose --env-file="./.env" -f ./docker-compose.yml up -d
-docker-compose --env-file="./.env" -f ./docker-compose.mariadb.yml up -d
-docker-compose --env-file="./.env" -f ./docker-compose.redis.yml up -d
-docker-compose --env-file="./.env" -f ./backend/docker-compose.yml -f ./docker-compose.api.yml up -d
-docker-compose --env-file="./.env" -f ./frontend/docker-compose.yml -f ./docker-compose.webgest.yml up -d
+stop_dev()
+start_dev()
 
 exit
 dev=false
