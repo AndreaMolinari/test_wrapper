@@ -1,0 +1,18 @@
+# /web/docker-compose.redis.yml
+
+version: '3.9'
+
+networks:
+  redis_net:
+
+services:
+  redis:
+    image: redis:6.2-alpine
+    restart: unless-stopped # dev only
+    # volumes:
+    #   - redis:/data
+    ports:
+      - 6379
+    networks:
+      - redis_net
+

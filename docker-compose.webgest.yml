@@ -1,0 +1,12 @@
+# /web/docker-compose.webgest.yml
+
+version: "3.9"
+
+services:
+  webgest:
+    networks:
+      reverse_proxy_net:
+        aliases:
+          - webgest_net
+networks:
+  reverse_proxy_net:

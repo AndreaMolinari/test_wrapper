@@ -1,0 +1,12 @@
+# /web/docker-compose.webtrax.yml
+
+version: "3.9"
+
+services:
+  webtrax:
+    networks:
+      reverse_proxy_net:
+        aliases:
+          - webtrax_net
+networks:
+  reverse_proxy_net:

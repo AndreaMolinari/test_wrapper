@@ -1,0 +1,25 @@
+# /web/docker-compose.mariadb.yml
+
+version: '3.9'
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    restart: unless-stopped # dev only
+    environment:
+      TZ: UTC
+      MARIADB_ROOT_PASSWORD: recordRootDb7
+      MARIADB_DATABASE: api
+      MARIADB_USER: aMolinariCom
+      MARIADB_PASSWORD: _imatto_
+    # volumes:
+    #   - ./mysql/conf.d:/etc/mysql/conf.d # Dbms configuration
+    #   - mariadb:/var/lib/mysql # Stores databases in volume
+    #   # - ../../../../dumps:/dumps
+    ports:
+      - 3307:3306
+    networks: 
+      - mariadb_net
+
+networks:
+  mariadb_net:
