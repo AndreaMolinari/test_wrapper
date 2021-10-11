@@ -1,6 +1,6 @@
 # /web/docker-compose.webgest.yml
 
-version: "3.9"
+version: "3.7"
 
 services:
   webgest:
